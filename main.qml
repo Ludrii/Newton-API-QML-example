@@ -8,7 +8,7 @@ Window {
     width: 640
     height: 480
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("Derivative calculator")
 
     function request(url, callback) {
         var xhr = new XMLHttpRequest()
@@ -40,10 +40,10 @@ Window {
             Layout.fillHeight: true
             Layout.fillWidth: true
             id: apiRequestButton
-            text: "Derive"
+            text: "Calculate"
 
             onClicked: {
-                console.log("Hello")
+                console.log("Calculating")
                 request("https://newton.now.sh/api/v2/derive/" + textid.text,
                         function (o) {
                             if (o.status === 200) {
