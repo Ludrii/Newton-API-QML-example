@@ -28,6 +28,7 @@ Window {
         Layout.fillHeight: true
         Layout.fillWidth: true
         anchors.fill: parent
+
         TextField {
             //            Layout.alignment: Qt.AlignTop
             id: textid
@@ -48,11 +49,19 @@ Window {
                         function (o) {
                             if (o.status === 200) {
                                 console.log(o.responseText)
+                                const parsed = JSON.parse(o.responseText)
+                                output.text = parsed.result
                             } else {
                                 console.log("Some error has occurred")
                             }
                         })
             }
+        }
+
+        TextField {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            id: output
         }
     }
 }
