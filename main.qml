@@ -30,38 +30,42 @@ Window {
         anchors.fill: parent
 
         TextField {
-            //            Layout.alignment: Qt.AlignTop
             id: textid
             Layout.fillHeight: true
             Layout.fillWidth: true
         }
 
         Button {
-            //            Layout.alignment: Qt.AlignBottom
             Layout.fillHeight: true
             Layout.fillWidth: true
             id: apiRequestButton
             text: "Calculate"
 
             onClicked: {
-                console.log("Calculating")
-                request("https://newton.now.sh/api/v2/derive/" + textid.text,
-                        function (o) {
-                            if (o.status === 200) {
-                                console.log(o.responseText)
-                                const parsed = JSON.parse(o.responseText)
-                                output.text = parsed.result
-                            } else {
-                                console.log("Some error has occurred")
-                            }
-                        })
+                if(cache.has(textid.text))
+                    output.text=cache.get(textid.text)
+                else
+                {
+                    console.log("Calculating")
+                    request("https://newton.now.sh/api/v2/derive/" + textid.text,
+                            function (o) {
+                                if (o.status === 200) {
+                                    console.log(o.responseText)
+                                    const parsed = JSON.parse(o.responseText)
+                                    output.text = parsed.result
+                                    cache.store(textid.text, parsed.result)
+                                } else {
+                                    console.log("Some error has occurred")
+                                }
+                            })
+                }
             }
         }
-
         TextField {
             Layout.fillHeight: true
             Layout.fillWidth: true
             id: output
         }
+
     }
 }

@@ -4,6 +4,9 @@
 #include <QLocale>
 #include <QTranslator>
 
+#include "cache.h"
+#include <QQmlContext>
+
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -11,6 +14,8 @@ int main(int argc, char *argv[])
 #endif
 
     QGuiApplication app(argc, argv);
+
+    Cache cache;
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -30,6 +35,9 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+
+    QQmlContext* rootContext = engine.rootContext();
+    rootContext->setContextProperty("cache", &cache);
 
     return app.exec();
 }
